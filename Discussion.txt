@@ -1,51 +1,51 @@
 Meeting minutes 08/27:
-	• Overall design:
+	â€¢ Overall design:
 		? Tracker
 		? Game
 		? Player/client
 		? Server/serverManager
 	
-	• Game flow:
+	â€¢ Game flow:
 		? player:
-			§ JoinGame ->contactTracker ->  get player list
+			Â§ JoinGame ->contactTracker ->  get player list
 				? If (list.size = 0) -> client.promote(Pserver)
-					® Pserver generates a random location for itself
+					Â® Pserver generates a random location for itself
 						? Udpate.gameState
 						? Talk to Bserver every 1 s:
 							} If (Bserver.notFound && list.size>=2) -> restore.Bserver
 						? Move
 							} Contact Pserver ->Pserver.updateGameStat3
 				? If (list.size = 1) -> client.promote(Bserver)
-					® Contact Pserver -> Pserver.setLocation(Player)
-					® Pserver talks to Bserver every 1s
+					Â® Contact Pserver -> Pserver.setLocation(Player)
+					Â® Pserver talks to Bserver every 1s
 						? If (Pserver.n otFound && list.size>=2) -> restore.Pserver
 						? Contact Pserver -> Pserver.returnGameState -> Move ->Pserver.updateGameState
 				? If(list.size >=2) -> ask peer to get Pserver's ID
-					® Pserver.setLocation(player)
+					Â® Pserver.setLocation(player)
 						? Contact Pserver -> Pserver.returnGameState -> Move -> Pserver.updateGameState
 						
 				
 		? How to find a dead client?
-			§ Precondition:
+			Â§ Precondition:
 				? There will be at most 1 client died within 2 sec
 				? Msg delay is 0.2 sec
 				? Need to find the dead client within 2 sec, namely 10 rounds of msg transmissions.
-			§ Solution:
+			Â§ Solution:
 				? Each client ping other 1/2/3 clients from the Track list
-					® If ping:fail -> update the Pserver
-					® If ping:pass -> do nothing
+					Â® If ping:fail -> update the Pserver
+					Â® If ping:pass -> do nothing
 				
 		? How to handle if Pserver crashes when processing request?
-			§ Let client to ask from Bserver
+			Â§ Let client to ask from Bserver
 		? Hot to handle client's request when Bserver/Pserver is restoring Pserver/Bserver?
-			§ Drop the request and let client resend the request
+			Â§ Drop the request and let client resend the request
 		
 		? Game:
-			§ Player implements clientInterface{
+			Â§ Player implements clientInterface{
 			}
 			
 			Server implements serverInterface{
 				gameState()
 			}
 		? Tracker:
-			§ Maintain the list of players' IP/port/ID, N/K
+			Â§ Maintain the list of players' IP/port/ID, N/K
